@@ -8,22 +8,41 @@
  score = 0;
 
  function preload() {
-
+classifier=ml5.imageClassifier();
  }
 
  function setup() {
      canvas = createCanvas(280, 280)
      canvas.center();
      background('white');
+     canvas.mouseReleased(classifyCanvas);
  }
 
  function draw() {
-     if (drawn_sketch = sketch) {
+strokeWeight(13);
+stroke(0); 
+if (mouseIsPressed) {
+line(pmouseX, pmouseY, mouseX, mouseY); 
+}
+    if (drawn_sketch = sketch) {
          var answer_holder = "set";
          var score = score + 1;
      }
  }
+function classifyCanvas(){
+classifier.classify(canvas, gotResult);
+}
+function gotResult(error, results){
+if (error) {
+console.error();
+} else {
+console.log(results);   
+drawn_sketch=results[0].label;
+document.getElementById("label").innerHTML="sketch"+drawn_sketch;
+document.getElementById("confidence").innerHTML="confidence"+Math.round(results[0].confidence*100)+"%";
+}
 
+}
  function check_sketch() {
      timer_counter++;
      document.getElementById('time').innerHTML = 'Timer: ' + timer_counter;
